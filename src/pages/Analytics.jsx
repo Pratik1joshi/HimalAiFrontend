@@ -26,38 +26,7 @@ export default function Analytics() {
   const { logout } = useAuth()
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-6">
-        <Link className="lg:hidden" to="/">
-          <ArrowLeft className="h-6 w-6" />
-          <span className="sr-only">Back</span>
-        </Link>
-        <div className="w-full flex justify-between">
-          <h1 className="text-xl font-semibold">Analytics</h1>
-          <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
-            <Link className="flex items-center gap-2" to="/">
-              <Home className="h-4 w-4" />
-              Home
-            </Link>
-            <Link className="flex items-center gap-2" to="/dashboard">
-              <PieChart className="h-4 w-4" />
-              Dashboard
-            </Link>
-            <Link className="flex items-center gap-2" to="/upload">
-              <Upload className="h-4 w-4" />
-              Upload
-            </Link>
-            <Link className="flex items-center gap-2 text-primary" to="/analytics">
-              <PieChart className="h-4 w-4" />
-              Analytics
-            </Link>
-            <Button variant="ghost" size="sm" onClick={logout} className="flex items-center gap-2">
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
-          </nav>
-        </div>
-      </header>
+    <div className="flex min-h-screen w-[full] flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="flex items-center gap-4">
           <div className="flex-1">
@@ -335,7 +304,7 @@ export default function Analytics() {
                       </div>
                     </div>
                     <div className="h-2 w-full rounded-full bg-gray-100">
-                      <div className="h-2 w-[85%] rounded-full bg-yellow-500" />
+                      <div className="h-2 w-[30%] rounded-full bg-yellow-500" />
                     </div>
                     <div className="text-xs text-gray-500">Your current spending: 25.5% (within recommended range)</div>
 
@@ -347,7 +316,7 @@ export default function Analytics() {
                       </div>
                     </div>
                     <div className="h-2 w-full rounded-full bg-gray-100">
-                      <div className="h-2 w-[120%] rounded-full bg-red-500" />
+                      <div className="h-2 w-[15%] rounded-full bg-red-500" />
                     </div>
                     <div className="text-xs text-gray-500">Your current spending: 18% (over budget)</div>
 
@@ -359,7 +328,7 @@ export default function Analytics() {
                       </div>
                     </div>
                     <div className="h-2 w-full rounded-full bg-gray-100">
-                      <div className="h-2 w-[60%] rounded-full bg-red-500" />
+                      <div className="h-2 w-[20%] rounded-full bg-red-500" />
                     </div>
                     <div className="text-xs text-gray-500">Your current saving: 12% (below target)</div>
                   </div>
