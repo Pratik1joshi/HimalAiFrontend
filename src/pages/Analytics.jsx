@@ -28,10 +28,10 @@ export default function Analytics() {
   return (
     <div className="flex min-h-screen w-[full] flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col lg:flex-row xl:flex-row items-center gap-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold tracking-tight">Financial Analytics</h1>
-            <p className="text-gray-500 dark:text-gray-400">Insights and trends from your spending data</p>
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight">Financial Analytics</h1>
+            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">Insights from your spending patterns</p>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -51,17 +51,28 @@ export default function Analytics() {
               <DropdownMenuItem onClick={() => setDateRange("All Time")}>All Time</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="icon">
-            <Download className="h-4 w-4" />
-            <span className="sr-only">Download</span>
-          </Button>
         </div>
 
         <Tabs defaultValue="trends" className="w-full">
           <TabsList className="grid w-full max-w-md grid-cols-3">
-            <TabsTrigger value="trends">Spending Trends</TabsTrigger>
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="insights">Insights</TabsTrigger>
+            <TabsTrigger 
+              value="trends" 
+              className="data-[state=active]:border-b-2 data-[state=active]:border-blue-500 border border-transparent hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:bg-opacity-20 transition-colors rounded-t-md text-sm"
+            >
+              Spending Trends
+            </TabsTrigger>
+            <TabsTrigger 
+              value="categories" 
+              className="data-[state=active]:border-b-2 data-[state=active]:border-blue-500 border border-transparent hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:bg-opacity-20 transition-colors rounded-t-md text-sm"
+            >
+              Categories
+            </TabsTrigger>
+            <TabsTrigger 
+              value="insights" 
+              className="data-[state=active]:border-b-2 data-[state=active]:border-blue-500 border border-transparent hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:bg-opacity-20 transition-colors rounded-t-md text-sm"
+            >
+              Insights
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="trends" className="mt-6">
             <div className="grid gap-6">

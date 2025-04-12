@@ -51,14 +51,24 @@ export default function Upload() {
   return (
     <div className="mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Upload Statements</h1>
-        <p className="text-gray-500 dark:text-gray-400">Import your financial data</p>
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight">Upload Statements</h1>
+        <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">Import your financial data</p>
       </div>
 
       <Tabs defaultValue="upload" className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-2">
-          <TabsTrigger value="upload">Upload Statement</TabsTrigger>
-          <TabsTrigger value="manual">Manual Entry</TabsTrigger>
+          <TabsTrigger 
+            value="upload" 
+            className="data-[state=active]:border-b-2 data-[state=active]:border-blue-500 border border-transparent hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:bg-opacity-20 transition-colors rounded-t-md text-sm"
+          >
+            Upload Statement
+          </TabsTrigger>
+          <TabsTrigger 
+            value="manual" 
+            className="data-[state=active]:border-b-2 data-[state=active]:border-blue-500 border border-transparent hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:bg-opacity-20 transition-colors rounded-t-md text-sm"
+          >
+            Manual Entry
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="upload" className="mt-6">
           <div className="grid gap-6 md:grid-cols-2">

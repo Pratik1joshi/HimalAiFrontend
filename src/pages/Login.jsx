@@ -174,7 +174,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex w-full min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Left side - Form section */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-4">
         <div className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">

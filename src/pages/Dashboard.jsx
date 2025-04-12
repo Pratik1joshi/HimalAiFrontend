@@ -29,8 +29,8 @@ export default function Dashboard() {
   const [dateRange, setDateRange] = useState("This Month")
 
   return (
-    <div className="w-auto px-4 py-8">
-      <div className="flex items-center gap-4 mb-6">
+    <div className="w-full px-4 py-8">
+      <div className="flex flex-col lg:flex-row xl:flex-row items-center gap-4 mb-6">
         <div className="flex-1">
           <h1 className="text-2xl font-bold tracking-tight">Expenses</h1>
           <p className="text-gray-500 dark:text-gray-400">Track and manage your spending</p>
@@ -206,7 +206,7 @@ export default function Dashboard() {
         </Card>
       </div>
       <Card className="mt-6">
-        <CardHeader className="flex flex-row items-center">
+        <CardHeader className="flex flex-col lg:flex-row xl:flex-row items-center">
           <div className="grid gap-2">
             <CardTitle>Recent Transactions</CardTitle>
             <CardDescription>You have 25 transactions this month.</CardDescription>
