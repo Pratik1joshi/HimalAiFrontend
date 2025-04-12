@@ -15,7 +15,7 @@ export default function Home() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                <h1 className="text-xl font-bold tracking-tighter sm:text-4xl xl:text-5xl/none">
                   Take Control of Your Finances
                 </h1>
                 <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
@@ -50,7 +50,7 @@ export default function Home() {
               <img
                 alt="Finance Dashboard"
                 className="aspect-video overflow-hidden rounded-xl object-cover object-center"
-                src="/placeholder.svg?height=550&width=800"
+                src="http://www.w3.org/placeholder.svg?height=550&width=800"
               />
             </div>
           </div>

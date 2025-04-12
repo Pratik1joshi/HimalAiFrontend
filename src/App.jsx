@@ -24,7 +24,7 @@ function ProtectedRoute({ children }) {
 // Layout component to wrap all pages
 function Layout({ children }) {
   return (
-    <div className="min-h-screen flex flex-col w-[calc(100vw-1px)] md:w-[calc(100vw-1px)] lg:w-[calc(100vw-3px)] xl:w-[calc(100vw-3px)] 2xl:w-[calc(100vw-px)] overflow-x-hidden">
+    <div className="min-h-screen flex flex-col w-[calc(100vw-2px)] md:w-[calc(100vw-2px)] lg:w-[calc(100vw-5px)] xl:w-[calc(100vw-3px)] 2xl:w-[calc(100vw-px)] overflow-x-hidden">
       <Navbar />
       <main className="flex-1 w-full">
         <div className="mx-auto px-8 w-full">{children}</div>
@@ -44,8 +44,8 @@ function App() {
           </Layout>
         }
       />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Layout><Login /></Layout>} />
+      <Route path="/signup" element={<Layout><Signup /></Layout>} />
       <Route
         path="/dashboard"
         element={

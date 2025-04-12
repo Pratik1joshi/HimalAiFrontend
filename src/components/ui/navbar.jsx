@@ -1,22 +1,79 @@
 "use client"
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger 
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 export function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <header className="w-full bg-white border-b shadow-sm">
-      <div className="mx-auto px-8 sm:px-10 w-full lm:px-12 xl:px-26 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="font-bold text-xl">FinTrack</Link>
+        
+        {/* Desktop navigation */}
+        <div className="hidden sm:flex items-center gap-6">
+          <nav className="flex items-center gap-6">
+            {user ? (
+              <>
+                <Link to="/dashboard" className="text-sm font-medium hover:text-blue-600">Dashboard</Link>
+                <Link to="/upload" className="text-sm font-medium hover:text-blue-600">Upload</Link>
+                <Link to="/analytics" className="text-sm font-medium hover:text-blue-600">Analytics</Link>
+              </>
+            ) : (
+              <></>
+            )}
+          </nav>
+          
+          {/* Profile dropdown or login buttons */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                <User className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5 text-sm font-medium">
+                  {user.name || user.email}
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link to="/login">
+                <Button variant="outline" size="sm">Login</Button>
+              </Link>
+              <Link to="/signup">
+                <Button size="sm">Sign Up</Button>
+              </Link>
+            </div>
+          )}
+        </div>
         
         {/* Mobile menu button */}
         <button 
@@ -24,28 +81,8 @@ export function Navbar() {
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          <Menu className="h-6 w-6" />
         </button>
-        
-        {/* Desktop navigation */}
-        <nav className="hidden sm:flex items-center gap-6">
-          {user ? (
-            <>
-              <Link to="/dashboard" className="text-sm font-medium hover:text-blue-600">Dashboard</Link>
-              <Link to="/upload" className="text-sm font-medium hover:text-blue-600">Upload</Link>
-              <Link to="/analytics" className="text-sm font-medium hover:text-blue-600">Analytics</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-sm font-medium hover:text-blue-600">Login</Link>
-              <Link to="/signup" className="text-sm font-medium hover:text-blue-600">Sign Up</Link>
-            </>
-          )}
-        </nav>
       </div>
       
       {/* Mobile menu - slides in from right, auto height */}
@@ -88,6 +125,17 @@ export function Navbar() {
               >
                 Analytics
               </Link>
+              <div className="border-t my-2"></div>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  handleLogout();
+                }}
+                className="text-sm font-medium px-6 py-3 text-left text-red-600 hover:bg-gray-100 flex items-center"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </button>
             </>
           ) : (
             <>
