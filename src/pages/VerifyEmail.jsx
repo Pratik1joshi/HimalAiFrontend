@@ -21,14 +21,20 @@ export default function VerifyEmail() {
     setError('');
     
     try {
+      // Format request body to match backend expectations
       const response = await authService.verifyEmail({
-        email,
-        code: verificationCode
+        email: email,  // Keep same field name
+        code: verificationCode  // Keep same field name
       });
       
-      // Store tokens in localStorage or context
-      localStorage.setItem('accessToken', response.data.access_token);
-      localStorage.setItem('refreshToken', response.data.refresh_token);
+      // Store tokens in localStorage with consistent naming
+      localStorage.setItem('access_token', response.data.access_token);
+      localStorage.setItem('refresh_token', response.data.refresh_token);
+      
+      // Store user data
+      if (response.data.user) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
       
       setSuccess(true);
       

@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000';
-// Add the API version prefix to match your backend configuration
-const API_VERSION = '/api/v1'; 
+const API_URL = 'http://localhost:8000';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: `${API_URL}${API_VERSION}`,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -14,14 +12,47 @@ const api = axios.create({
 
 // Auth services
 export const authService = {
-  signup: (userData) => {
-    return api.post('/auth/signup', userData);
+  signup: async (userData) => {
+    return api.post('/auth/signup', {
+      email: userData.email,
+      password: userData.password,
+      confirm_password: userData.confirm_password,
+      first_name: userData.first_name,
+      last_name: userData.last_name
+    });
   },
-  login: (credentials) => {
-    return api.post('/auth/login', credentials);
+  
+  login: async (email, password) => {
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+    
+    return api.post('/auth/login', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
   },
-  verifyEmail: (data) => {
-    return api.post('/auth/verify', data);
+  
+  verifyEmail: async (data) => {
+    // Use correct format for verify endpoint
+    return api.post('/auth/verify', {
+      email: data.email,
+      code: data.code
+    });
+  },
+  
+  resendVerification: async (email) => {
+    return api.post('/auth/resend-verification', { email });
+  }
+};
+
+// Set auth token for API calls
+export const setAuthToken = (token) => {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common['Authorization'];
   }
 };
 

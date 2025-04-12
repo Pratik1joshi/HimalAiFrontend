@@ -126,14 +126,16 @@ export default function Signup() {
     setIsSubmitting(true);
 
     try {
-      // Use the authService instead of direct axios call
+      // Use the authService with properly formatted data
       const response = await authService.signup({
         email: formData.email,
         password: formData.password,
-        confirm_password: formData.confirmPassword,
-        first_name: formData.firstName,
-        last_name: formData.lastName
+        confirm_password: formData.confirmPassword, // snake_case as expected by backend
+        first_name: formData.firstName, // snake_case as expected by backend
+        last_name: formData.lastName // snake_case as expected by backend
       });
+
+      console.log("Signup successful:", response.data);
 
       setAlert({
         show: true,
@@ -141,10 +143,10 @@ export default function Signup() {
         message: "Account created successfully! Please check your email for verification."
       });
       
-      // Optional: Navigate to verification page
-      // setTimeout(() => {
-      //   navigate("/verify-email", { state: { email: formData.email } });
-      // }, 1500);
+      // Navigate to verification page after success
+      setTimeout(() => {
+        navigate("/verify-email", { state: { email: formData.email } });
+      }, 1500);
 
     } catch (error) {
       console.error("Failed to create account", error);

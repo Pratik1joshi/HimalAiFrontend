@@ -3,14 +3,18 @@ import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, ArrowRight, Check, ArrowLeft, Edit2, X } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
+import axios from "axios";
+
+// Set up API URL
+const API_URL = "http://localhost:8000";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: contextLogin, currentUser } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
-  const [emailStatus, setEmailStatus] = useState("unchecked"); // unchecked, checking, valid, invalid
+  const [emailStatus, setEmailStatus] = useState("unchecked");
   const lastCheckedEmail = useRef("");
 
   const [formData, setFormData] = useState({
@@ -22,7 +26,15 @@ export default function Login() {
     show: false,
     type: "",
     message: "",
+    action: null,
   });
+
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/dashboard");
+    }
+  }, [currentUser, navigate]);
 
   // Validate email format
   const isValidEmail = (email) => {
@@ -78,8 +90,9 @@ export default function Login() {
     setIsCheckingEmail(true);
 
     try {
-      // In a real app, you would check if the email exists in your database
-      // For this demo, we'll simulate a successful email check
+      // Check if email exists in the system
+      // In a real implementation, you would call an API endpoint to verify this
+      // For now, we'll assume all properly formatted emails are valid
       setTimeout(() => {
         setCurrentStep(2);
         setIsCheckingEmail(false);
@@ -101,7 +114,8 @@ export default function Login() {
     setAlert({ show: false, type: "", message: "" });
 
     try {
-      await login(formData.email, formData.password);
+      // Use the context login function instead of making API call directly
+      const userData = await contextLogin(formData.email, formData.password);
       
       setAlert({
         show: true,
@@ -109,17 +123,51 @@ export default function Login() {
         message: "Login successful! Redirecting to dashboard..."
       });
       
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+      // No need for setTimeout, navigation will happen via the useEffect when currentUser changes
     } catch (error) {
       console.error("Failed to log in", error);
       
-      setAlert({
-        show: true,
-        type: "error",
-        message: "Login failed. Please check your credentials."
-      });
+      // Handle different error scenarios
+      if (error.response) {
+        const status = error.response.status;
+        const errorDetail = error.response.data?.detail || "";
+        
+        if (status === 401) {
+          if (errorDetail.includes("Email not verified")) {
+            // Handle unverified email case
+            setAlert({
+              show: true,
+              type: "warning",
+              message: "Please verify your email before logging in.",
+              action: {
+                label: "Verify Now",
+                onClick: () => navigate("/verify-email", { state: { email: formData.email } })
+              }
+            });
+          } else {
+            // Handle invalid credentials
+            setAlert({
+              show: true,
+              type: "error",
+              message: "Invalid email or password. Please try again."
+            });
+          }
+        } else {
+          // General error with response
+          setAlert({
+            show: true,
+            type: "error",
+            message: errorDetail || "Login failed. Please try again."
+          });
+        }
+      } else {
+        // Network error
+        setAlert({
+          show: true,
+          type: "error",
+          message: "Network error. Please check your connection and try again."
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +211,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Alert messages */}
+          {/* Alert messages - Update to show action button if available */}
           {alert.show && (
             <div
               className={`mb-4 p-3 rounded-md text-center text-sm font-medium ${
@@ -175,6 +223,14 @@ export default function Login() {
               }`}
             >
               {alert.message}
+              {alert.action && (
+                <button
+                  onClick={alert.action.onClick}
+                  className="ml-2 text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {alert.action.label}
+                </button>
+              )}
             </div>
           )}
 
