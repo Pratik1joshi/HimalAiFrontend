@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { Menu, X, User, LogOut, BarChart3, Home, Upload } from "lucide-react";
+import { Menu, X, User, LogOut, BarChart3, Home, Upload, Shield, Gift } from "lucide-react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -84,6 +84,21 @@ export function Navbar() {
                 >
                   Analytics
                 </Link>
+                <Link 
+                  to="/vouchers" 
+                  className={isActiveLink('/vouchers') ? activeLinkClass : linkClass}
+                >
+                  Vouchers
+                </Link>
+                {/* Add Admin link for admin users */}
+                {currentUser.is_admin && (
+                  <Link 
+                    to="/admin" 
+                    className={isActiveLink('/admin') ? activeLinkClass : linkClass}
+                  >
+                    Admin
+                  </Link>
+                )}
               </>
             )}
           </nav>
@@ -101,6 +116,13 @@ export function Navbar() {
                 <div className="px-2 py-1.5 text-sm font-medium">
                   {currentUser.email}
                 </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="cursor-pointer">
+                    <User className="h-4 w-4 mr-2" />
+                    Profile & Points
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 dark:text-red-400">
                   <LogOut className="h-4 w-4 mr-2" />
@@ -197,6 +219,39 @@ export function Navbar() {
                 <BarChart3 className="h-4 w-4 mr-2" />
                 Analytics
               </Link>
+              <Link 
+                to="/vouchers" 
+                className={`flex items-center text-sm px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${
+                  isActiveLink('/vouchers') ? 'text-blue-600 font-medium' : ''
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Gift className="h-4 w-4 mr-2" />
+                Vouchers
+              </Link>
+              <Link 
+                to="/profile" 
+                className={`flex items-center text-sm px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${
+                  isActiveLink('/profile') ? 'text-blue-600 font-medium' : ''
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <User className="h-4 w-4 mr-2" />
+                Profile & Points
+              </Link>
+              {/* Add Admin link for admin users in mobile menu */}
+              {currentUser.is_admin && (
+                <Link 
+                  to="/admin" 
+                  className={`flex items-center text-sm px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                    isActiveLink('/admin') ? 'text-blue-600 font-medium' : ''
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Admin Panel
+                </Link>
+              )}
               <div className="border-t my-2 dark:border-gray-700"></div>
               <button
                 onClick={() => {

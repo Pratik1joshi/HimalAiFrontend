@@ -1,8 +1,10 @@
 import React from 'react';
+import { Navbar } from './ui/navbar';
 
 const Layout = ({ children }) => {
   return (
     <div className="min-h-screen w-100vw flex flex-col bg-gray-50 dark:bg-gray-900">
+      <Navbar />
       {/* Main content - Navbar is now in App.jsx */}
       <main className="w-full flex-grow pt-0"> {/* Added padding-top to account for navbar */}
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-0">

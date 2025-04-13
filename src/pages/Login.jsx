@@ -6,7 +6,7 @@ import { Button } from "../components/ui/button";
 import axios from "axios";
 
 // Set up API URL
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8000/api/v1";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -117,13 +117,51 @@ export default function Login() {
       // Use the context login function instead of making API call directly
       const userData = await contextLogin(formData.email, formData.password);
       
-      setAlert({
-        show: true,
-        type: "success",
-        message: "Login successful! Redirecting to dashboard..."
-      });
+      // Check if user is admin
+      try {
+        const adminCheckResponse = await axios.get(`${API_URL}/auth/check-admin`, {
+          params: { email: formData.email },
+          headers: { Authorization: `Bearer ${userData.access_token}` }
+        });
+        
+        // Debug logging
+        console.log("Admin check response data:", adminCheckResponse.data);
+        
+        // The actual issue: adminCheckResponse.data is an object, not a boolean
+        // We need to access the is_admin property from the object
+        const isAdmin = adminCheckResponse.data.is_admin === true;
+        console.log("Extracted is_admin value:", isAdmin);
+        
+        // Update the user object with admin status
+        userData.is_admin = isAdmin;
+        
+        // Save the updated user data to localStorage to persist the admin status
+        localStorage.setItem('user', JSON.stringify(userData));
+        
+        setAlert({
+          show: true,
+          type: "success",
+          message: "Login successful! Redirecting..."
+        });
+        
+        // Navigate based on admin status
+        if (isAdmin) {
+          console.log("Admin user detected - redirecting to admin panel");
+          setTimeout(() => navigate("/admin"), 1000);
+        } else {
+          console.log("Regular user detected - redirecting to dashboard");
+          setTimeout(() => navigate("/dashboard"), 1000);
+        }
+        
+      } catch (adminCheckError) {
+        console.error("Failed to check admin status", adminCheckError);
+        setAlert({
+          show: true,
+          type: "error",
+          message: "Failed to verify admin status. Please try again."
+        });
+      }
       
-      // No need for setTimeout, navigation will happen via the useEffect when currentUser changes
     } catch (error) {
       console.error("Failed to log in", error);
       

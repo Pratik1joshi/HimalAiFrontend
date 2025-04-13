@@ -19,6 +19,7 @@ export default function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
+    
   });
 
   const [alert, setAlert] = useState({
